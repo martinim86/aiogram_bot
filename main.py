@@ -2,6 +2,7 @@ import db_myql as db
 from aiogram import Bot, Dispatcher, executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
 import logging
+from datetime import datetime
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 import keyboards as kb
@@ -126,6 +127,7 @@ async def change_balance3(message: types.Message, state: FSMContext):
         await bot.send_message(message.from_user.id, "Нет такого пользователя")
     else:
         db.update_users(answer3, answer4)
+
         await bot.send_message(message.from_user.id, "Баланс изменен")
     await state.finish()
 
@@ -144,6 +146,10 @@ async def answer_q2(message: types.Message, state: FSMContext):
         db.create_user(message.from_user.first_name, answer2)
     else:
         db.update_users(message.from_user.first_name, answer2)
+        db.insert_payment(message.from_user.first_name, answer2, datetime.now())
+        await state.update_data(answer6="Ok")
+        data = await state.get_data()
+        print(data. get("answer6"))
 
 
     buttons = [
