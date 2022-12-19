@@ -75,6 +75,7 @@ def export_file():
 def insert_payment(p_name, p_pay,p_date):
     sql = "INSERT INTO payments (p_name, p_pay,p_date ) VALUES (%s, %s, %s)"
     val = (p_name, p_pay,p_date)
+    print(val)
     mycursor.execute(sql, val)
     mydb.commit()
     # print(p_name, p_pay,p_date)

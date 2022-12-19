@@ -139,6 +139,8 @@ async def process_hi2_command(message: types.Message):
     await bot.send_message(message.from_user.id, "Введите сумму, на которую вы хотите пополнить баланс")
     await Test.Q2.set()
 
+from aiogram.utils.callback_data import CallbackData
+vote_cb = CallbackData('vote', 'action', 'amount')
 @dp.message_handler(state=Test.Q2)
 async def answer_q2(message: types.Message, state: FSMContext):
     answer2 = message.text
@@ -146,15 +148,17 @@ async def answer_q2(message: types.Message, state: FSMContext):
         db.create_user(message.from_user.first_name, answer2)
     else:
         db.update_users(message.from_user.first_name, answer2)
-        db.insert_payment(message.from_user.first_name, answer2, datetime.now())
-        await state.update_data(answer6="Ok")
-        data = await state.get_data()
-        print(data. get("answer6"))
+        try:
+            db.insert_payment(message.from_user.first_name, answer2, datetime.now())
+            amount = 1
+        except ValueError:
+            print("Oops!  That was no valid pay")
 
 
     buttons = [
-        types.InlineKeyboardButton(text="Проверить оплату", callback_data='check_pay'),
-        types.InlineKeyboardButton(text="Прошел ли платеж", callback_data='is_pay_true'),
+        types.InlineKeyboardButton(text="Проверить оплату", callback_data=vote_cb.new(action='up', amount=amount)),
+        types.InlineKeyboardButton(text="Ссылка на оплату", url = "https://qiwi.com/"),
+
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
@@ -166,9 +170,12 @@ async def answer_q2(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-@dp.callback_query_handler(text="check_pay")
-async def process_hi2_command(message: types.Message):
-    await message.answer("Оплата прошла")
+@dp.callback_query_handler(vote_cb.filter(action='up'))
+async def process_hi2_command1(message: types.CallbackQuery, callback_data: dict):
+    amount = int(callback_data['amount'])
+    if amount == 1:
+        await message.answer("Оплата прошла")
+
 @dp.callback_query_handler(text="is_pay_true")
 async def process_hi2_command(message: types.Message):
     await message.answer("Платеж прошел")
