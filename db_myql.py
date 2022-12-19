@@ -75,10 +75,8 @@ def export_file():
 def insert_payment(p_name, p_pay,p_date):
     sql = "INSERT INTO payments (p_name, p_pay,p_date ) VALUES (%s, %s, %s)"
     val = (p_name, p_pay,p_date)
-    print(val)
     mycursor.execute(sql, val)
     mydb.commit()
-    # print(p_name, p_pay,p_date)
 def select_pay():
     mycursor.execute("SELECT * FROM payments")
     myresult = mycursor.fetchall()
@@ -86,23 +84,3 @@ def select_pay():
         print(x)
 
 
-# insert_payment("John1", "21", "12.12.2020")
-
-select_pay()
-# mycursor.execute("CREATE TABLE payments (p_name VARCHAR(255), p_pay INTEGER, p_date DATE)")
-# mycursor.execute("INSERT INTO payments (p_name, p_pay,p_date  ) VALUES ("Titke", 50, "12/12/2020") payments")
-# mycursor.execute("DROP TABLE customers")
-# sql = "DROP TABLE customers"
-
-
-# mycursor.execute("SELECT * FROM payments")
-#
-# myresult = mycursor.fetchall()
-# sql = "INSERT INTO payments (p_name, p_pay,p_date ) VALUES (%s, %s, %s)"
-# val = ("John", "21", "12.12.2020")
-# mycursor.execute(sql, val)
-#
-# mydb.commit()
-# for x in myresult:
-#     print(x)
-# select_users()
