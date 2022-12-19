@@ -10,7 +10,7 @@ from mysql.connector import connect
 import mysql.connector
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from loggin_func import loggin_to_file
-
+from config import API_TOKEN
 DB_HOST = 'localhost'
 DB_USER = 'summy'
 DATABASE_NAME = 'bot'
@@ -27,7 +27,7 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 
-API_TOKEN = '5909535015:AAFB676Jm6icCfOnLmJ32ss2fUwkKbt2M5A' # Токен
+
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
