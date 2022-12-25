@@ -84,3 +84,4 @@ def select_pay():
         print(x)
 
 
+select_users()
