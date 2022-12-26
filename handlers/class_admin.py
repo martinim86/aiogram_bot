@@ -1,11 +1,12 @@
 from keyboards import kb_admin
 from state_func import Test
-import db_myql as db
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from create_bot import dp, bot
-import keyboards as kb
+from db.db_myql import Database
+db = Database()
 class Admin:
+
     async def start_admin(message: types.Message):
         await message.answer('Добро пожаловать в Админ-Панель! Выберите действие на клавиатуре',
                              reply_markup=kb_admin)
@@ -63,6 +64,7 @@ class Admin:
         data = await state.get_data()
         answer3 = data.get("answer3")
         answer4 = message.text
+
         if db.select_user(answer3) is None:
             await bot.send_message(message.from_user.id, "Нет такого пользователя")
         else:
